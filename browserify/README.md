@@ -14,3 +14,6 @@ browserify main.js > bundle.js
 serve
 http://localhost:3000/
 ```
+
+## Reference
+- http://browserify.org/

@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/DaleSeo/node-practice/issues"
   },
-  "homepage": "https://github.com/DaleSeo/node-practice#readme"
+  "homepage": "https://github.com/DaleSeo/node-practice#readme",
+  "dependencies": {
+    "uniq": "^1.0.1"
+  }
 }
