@@ -1,1 +1,6 @@
 # Node Practice
+
+## Run
+```
+$ serve
+```
