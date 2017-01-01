@@ -7,7 +7,6 @@ var currentRoom = {};
 
 exports.listen = function(server) {
 	io = socketio.listen(server);
-	io.set('log level', 1);
 
 	io.sockets.on('connection', (socket) => {
 		guestNumber = assignGuestName(socket, guestNumber, nickNames, namesUsed);
@@ -18,7 +17,7 @@ exports.listen = function(server) {
 		handleRoomJoining(socket);
 
 		socket.on('rooms', () => {
-			socket.emit('rooms', io.sockets.manager.rooms);
+			socket.emit('rooms', io.of('/').adapter.rooms);
 		});
 
 		handleClientDisconnection(socket, nickNames, namesUsed);
@@ -44,7 +43,8 @@ function joinRoom(socket, room) {
 		text: nickNames[socket.id] + ' has joined ' + room + '.'
 	});
 
-	var usersInRoom = io.sockets.clients(room);
+	// var usersInRoom = io.sockets.clients(room);
+	var usersInRoom = io.of('/').in(room).clients;
 	if (usersInRoom.length > 1) {
 		var usersInRoomSummary = 'Users currently in ' + room + ': ';
 		for (var index in usersInRoom) {
@@ -73,13 +73,13 @@ function handleNameChangeAttempts(socket, nickNames, namesUsed) {
 				var previousName = nickNames[socket.id];
 				var previousNameIndex = namesUsed.indexOf(previousName);
 				namesUsed.push(name);
-				nicknames[socket.id] = name;
+				nickNames[socket.id] = name;
 				delete namesUsed[previousNameIndex];
 				socket.emit('nameResult', {
 					success: true,
 					name: name
 				});
-				socket.broadcast.to(currentRomm[socket.id]).emit('message', {
+				socket.broadcast.to(currentRoom[socket.id]).emit('message', {
 					text: previousName + ' is not known as ' + name + '.'
 				});
 			} else {

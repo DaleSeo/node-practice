@@ -11,7 +11,8 @@ function processUserInput(chatApp, socket) {
 	var systemMessage;
 
 	if (message.charAt(0) == '/') {
-		systemMessage = chatApp.processCommand(message);
+		systemMessage = chatApp.proccessCommand(message);
+		console.log('systemMessage:', systemMessage);
 		if (systemMessage) {
 			$('#messages').append(divSystemContentElement(systemMessage));
 		}
@@ -20,10 +21,10 @@ function processUserInput(chatApp, socket) {
 		$('#messages').append(divEscapedContentElement(message));
 		$('#messages').scrollTop($('#messages').prop('scrollHeight'));
 	}
-	$('#send-message').val(' ');
+	$('#send-message').val('');
 }
 
-var socket = io.connect();
+var socket = io();
 
 $(document).ready(() => {
 	var chatApp = new Chat(socket);
@@ -41,6 +42,7 @@ $(document).ready(() => {
 	});
 
 	socket.on('joinResult', (result) => {
+		console.log(result);
 		$('#room').text(result.room);
 		$('#messages').append(divSystemContentElement('Room changed.'));
 	});
@@ -54,14 +56,13 @@ $(document).ready(() => {
 		$('#room-list').empty();
 
 		for (var room in rooms) {
-			room = room.substring(1, room.length);
 			if (room != '') {
 				$('#room-list').append(divEscapedContentElement(room));
 			}
 		}
 
 		$('#room-list div').click(() => {
-			chatApp.processCommand('/join', + $(this).text());
+			chatApp.proccessCommand('/join', + $(this).text());
 			$('#send-message').focus();
 		});
 	});
@@ -72,7 +73,7 @@ $(document).ready(() => {
 
 	$('#send-message').focus();
 
-	#('#send-form').submit(() => {
+	$('#send-form').submit(() => {
 		processUserInput(chatApp, socket);
 		return false;
 	});
