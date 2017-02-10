@@ -7,7 +7,7 @@ node cli_tasks.js list
 ```
 
 ```
-node cli_tasks.js list
+node cli_tasks.js clear
 ```
 
 ```
