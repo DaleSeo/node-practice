@@ -1,1 +1,1 @@
-https://www.npmjs.com/package/mongodb
+- QuickStart: https://www.npmjs.com/package/mongodb
