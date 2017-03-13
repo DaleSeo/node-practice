@@ -1,0 +1,3 @@
+- Style Guide: http://chaijs.com/guide/styles/
+- Expect/Should(BDD): http://chaijs.com/api/bdd/
+- Assert(TDD): http://chaijs.com/api/assert/
