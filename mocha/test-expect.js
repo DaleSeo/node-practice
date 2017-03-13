@@ -16,4 +16,11 @@ describe('String#split', function () {
   it('should return an array', function () {
     expect(Array.isArray(current)).to.be.true
   })
+
+  it('should return the same array', function () {
+    expect(expected.length).to.equal(current.length)
+    for (let i = 0; i < expected.length; i++) {
+      expect(expected[i]).equal(current[i])
+    }
+  })
 })
