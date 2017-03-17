@@ -1,4 +1,4 @@
-const bonsai_url = process.env.BONSAI_URL;
+const bonsai_url = process.env.BONSAI_URL || 'http://localhost:9200';
 const elasticserach = require('elasticsearch');
 const client = new elasticserach.Client({
   host: bonsai_url,
