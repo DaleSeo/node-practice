@@ -108,3 +108,94 @@ expect(_.groupBy([1, 2, 3], n => n > 1)).to.be.eql({false: [1], true: [2, 3]})
 expect(_.groupBy({a: 1, b: 1, c: 2}, val => val / 2)).to.be.eql({0.5: [1, 1], 1: [2]})
 
 expect(_.groupBy('hello', c => c === 'l')).to.be.eql({ false: [ 'h', 'e', 'o' ], true: [ 'l', 'l' ] })
+
+/**
+ * Map
+ */
+expect(_.map([1, 2, 3], n => n * 2)).to.be.eql([2, 4, 6])
+
+var users = [
+  {
+    name: 'Alex'
+  },
+  {
+    name: 'Bob'
+  }
+];
+
+expect(_.map(users, 'name')).to.be.eql(['Alex', 'Bob'])
+expect(_.map(users, {name: 'Alex'})).to.be.eql([true, false])
+
+/**
+ * Reduce
+ */
+
+ expect(_.reduce([1, 2, 3], (accumulator, value) => accumulator + value)).to.be.eql(6)
+ expect(_.reduce([1, 2, 3], (accumulator, value) => accumulator + value, 100)).to.be.eql(106)
+
+ expect(_.reduceRight('hello', (accumulator, value) => accumulator.toUpperCase() + value)).to.be.eql('OLLEh')
+ expect(_.reduce('hello', (accumulator, value) => accumulator.toUpperCase() + value)).to.be.eql('HELLo')
+
+ /**
+  * Search
+  */
+var fruits = [
+  {
+    name: 'apple',
+    price: 0.99,
+    onSale: true
+  },
+  {
+    name: 'orange',
+    price: 1.99,
+    onSale: false
+  },
+  {
+    name: 'passion fruit',
+    price: 4.99,
+    onSale: false
+  }
+]
+
+expect(_.find(fruits, f => f.price <= 2)).to.be.eql(fruits[0])
+
+expect(_.find(fruits, 'onSale')).to.be.eql(fruits[0])
+
+expect(_.find(fruits, 'name', 'apple')).to.be.eql(fruits[0])
+
+expect(_.find(fruits, {name: 'apple', onSale: true})).to.be.eql(fruits[0])
+
+expect(_.findLast('hello', c => c < 'f')).to.be.eql('e')
+
+/**
+ * Sort
+ */
+expect(_.sortBy([3, 2, 1])).to.be.eql([1, 2, 3])
+expect(_.sortBy([-3, 2, 1], n => Math.abs(n))).to.be.eql([1, 2, -3])
+expect(_.sortBy([-3, 2, 1], Math.abs)).to.be.eql([1, 2, -3])
+
+var users = [
+  {
+    name: 'David',
+    age: 28
+  },
+  {
+    name: 'Alex',
+    age: 30
+  },
+  {
+    name: 'Bob',
+    age: 28
+  }
+]
+
+expect(_.sortBy(users, 'name')).to.be.eql([{name: 'Alex', age: 30}, {name: 'Bob', age: 28}, {name: 'David', age: 28}])
+
+expect(_.sortBy(users, ['age', 'name'])).to.be.eql([{name: 'Bob', age: 28}, {name: 'David', age: 28}, {name: 'Alex', age: 30}])
+
+expect(_.orderBy(users, ['age','name'], ['asc', 'desc'])).to.be.eql([{name: 'David', age: 28}, {name: 'Bob', age: 28}, {name: 'Alex', age: 30}])
+
+/**
+ * FlatMap
+ */
+expect(_.flatMap([1, 2], v => [v + 1, v - 1])).to.be.eql([2, 0, 3, 1])
