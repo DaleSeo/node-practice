@@ -7,4 +7,5 @@ $ serve
 
 ## Modules
 - [mongodb](mongodb)
+- [redis](redis)
 - [mocha](mocha)
