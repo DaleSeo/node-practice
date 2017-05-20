@@ -1,0 +1,11 @@
+{
+  "name": "bcrypt-practice",
+  "version": "1.0.0",
+  "description": "https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1",
+  "main": "user-model.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
