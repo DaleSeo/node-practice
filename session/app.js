@@ -1,10 +1,10 @@
 const express = require('express')
-const expressSession = require('express-session')
+const session = require('express-session')
 const bodyParser = require('body-parser')
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(expressSession({
+app.use(session({
   secret: 'my key',
   resave: true,
   saveUninitialized: true
