@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const path = require('path')
 const express = require('express')
+const logger = require('morgan')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -13,22 +14,20 @@ const mockUsers = [
   { username: 'guest', password: 'guest1234' }
 ]
 
-passport.initialize()
-// passport.session()
-// passport.serializeUser(function (user, done) {
-//   done(null, user.username)
-// })
-// passport.deserializeUser(function (username, done) {
-//   try {
-//     let user = _.find(mockUsers, {username})
-//     return(null, user)
-//   } catch (err) {
-//     return done(err)
-//   }
-// })
+passport.serializeUser(function (user, done) {
+  done(null, user.username)
+})
+passport.deserializeUser(function (username, done) {
+  try {
+    let user = _.find(mockUsers, {username})
+    return done(null, user)
+  } catch (err) {
+    return done(err)
+  }
+})
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log(`username: ${username}, password: ${password}`)
+    // console.log(`username: ${username}, password: ${password}`)
     try {
       let user = _.find(mockUsers, {username})
       console.log('user:', user)
@@ -47,6 +46,10 @@ passport.use(new LocalStrategy(
 
 const app = express()
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug')
+
+app.use(logger('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({
   secret: 'passport-practice',
@@ -54,20 +57,37 @@ app.use(session({
   saveUninitialized: true
 }))
 app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use((req, res, next) => {
+  console.log('#req.session:', req.session)
+  console.log('#req.user:', req.user)
+  if (req.url === '/login' || (req.session && req.user)) {
+    return next()
+  } else {
+    return res.redirect('/login')
+  }
+})
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'))
+  res.render('login', {error: req.flash('error')})
 })
 
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  successFalsh: 'Successfully loged in.',
+  successFlash: 'Successfully loged in.',
   failureRedirect: '/login',
   failureFlash: true
 }))
 
+app.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/')
+})
+
 app.get('/', (req, res) => {
-  res.send('<h1>Home</h1>')
+  res.render('index', {success: req.flash('success')})
 })
 
 app.listen(3000, console.log.bind(console, 'Server is running.'))
