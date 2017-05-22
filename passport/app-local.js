@@ -74,12 +74,14 @@ app.get('/login', (req, res) => {
   res.render('login', {error: req.flash('error')})
 })
 
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  successFlash: 'Successfully loged in.',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
+app.post('/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    successFlash: 'Successfully loged in.',
+    failureRedirect: '/login',
+    failureFlash: true
+  })
+)
 
 app.get('/logout', (req, res) => {
   req.logout()
