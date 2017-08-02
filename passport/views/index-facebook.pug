@@ -1,0 +1,12 @@
+h1 Facebook User Profile
+p= success
+if profile
+  ul
+    li= profile.id
+    li= profile.displayName
+    li= profile.email
+    li= profile.accessToken
+if profile
+  input(type='button', value='Log Out', onclick="location.href = '/logout'")
+else
+  input(type='button', value='Log In', onclick="location.href = '/auth/facebook'")
